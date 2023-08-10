@@ -11,7 +11,8 @@ public class ManageControls : MonoBehaviour
     // movement variable
     private float inputX;
     private float inputZ;
-    private Vector3 movement;
+    private Vector3 hMovement;
+    private Vector3 vMovement;
     private Vector3 velocity;
     private float moveSpeed;
     private float mouseSpeed;
@@ -66,13 +67,13 @@ public class ManageControls : MonoBehaviour
     private void FixedUpdate()
     {
         // input forward/backward
-        movement = characterController.transform.forward * inputZ;
+        vMovement = characterController.transform.forward * inputZ;
 
         // character rotate
-        characterController.transform.Rotate(Vector3.up * inputX * (mouseSpeed * Time.deltaTime));
+       characterController.transform.Rotate(Vector3.up * inputX * (mouseSpeed * Time.deltaTime));
 
         // character movement with gravity
-        characterController.Move(movement * moveSpeed * Time.deltaTime);
+        characterController.Move(vMovement * moveSpeed * Time.deltaTime);
         characterController.Move(velocity * Time.deltaTime);
     }
 }
