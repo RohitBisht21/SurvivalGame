@@ -5,8 +5,9 @@ using UnityEngine;
 public class ManageControls : MonoBehaviour
 {
     //components
+    public static ManageControls Instance { get; private set; }
     private CharacterController characterController;
-    private Animator animator;
+    public Animator animator;
 
     // movement variable
     private float inputX;
@@ -22,6 +23,15 @@ public class ManageControls : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (Instance == null)
+        {
+            Instance = this; // Assign the instance to the static property
+        }
+        else
+        {
+            Destroy(gameObject); // Destroy duplicate instances
+            return;
+        }
         //Get required components
         GameObject tempPlayer = GameObject.FindGameObjectWithTag("Player");
         characterController = tempPlayer.GetComponent<CharacterController>();
@@ -68,12 +78,11 @@ public class ManageControls : MonoBehaviour
     {
         // input forward/backward
         vMovement = characterController.transform.forward * inputZ;
-
-        // character rotate
-       characterController.transform.Rotate(Vector3.up * inputX * (mouseSpeed * Time.deltaTime));
+        hMovement = characterController.transform.right * inputX;
 
         // character movement with gravity
         characterController.Move(vMovement * moveSpeed * Time.deltaTime);
+        characterController.Move(hMovement * moveSpeed * Time.deltaTime);
         characterController.Move(velocity * Time.deltaTime);
     }
 }
