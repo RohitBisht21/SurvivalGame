@@ -10,8 +10,8 @@ public class ManageControls : MonoBehaviour
     public Animator animator;
 
     // movement variable
-    private float inputX;
-    private float inputZ;
+    public float inputX;
+    public float inputZ;
     private Vector3 hMovement;
     private Vector3 vMovement;
     private Vector3 velocity;
@@ -38,7 +38,7 @@ public class ManageControls : MonoBehaviour
         animator = tempPlayer.transform.GetComponent<Animator>();
 
         // initialize var
-        moveSpeed = 10f;
+        moveSpeed = 7f;
         gravity =-15f;
         mouseSpeed = 100f;
         jumpSpeed = 7f;

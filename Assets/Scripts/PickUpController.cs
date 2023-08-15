@@ -14,6 +14,14 @@ public class PickUpController : MonoBehaviour
 
     private void Update()
     {
+        if(ManageControls.Instance.inputZ !=0 ||ManageControls.Instance.inputX !=0 )
+        {
+            ManageControls.Instance.animator.SetInteger("RunWithGun", 1);
+        }
+        else
+        {
+             ManageControls.Instance.animator.SetInteger("RunWithGun", 0);
+        }
         if (Input.GetKey(KeyCode.Q))
         {
             Drop();
@@ -48,6 +56,7 @@ public class PickUpController : MonoBehaviour
                 Equip();
                 ManageControls.Instance.animator.SetBool("HoldGun", true);
             }
+
         }
     }
 }
