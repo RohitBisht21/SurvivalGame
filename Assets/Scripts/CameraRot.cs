@@ -21,7 +21,7 @@ public class CameraRot : MonoBehaviour
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         locRot.x = locRot.x - mouseY;
-        locRot.x = Mathf.Clamp(locRot.x, -20, 40);
+        locRot.x = Mathf.Clamp(locRot.x, -50, 40);
         locRot.y = transform.rotation.eulerAngles.y;
         locRot.z = 0;
 

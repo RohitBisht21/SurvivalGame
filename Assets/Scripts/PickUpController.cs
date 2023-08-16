@@ -6,9 +6,20 @@ public class PickUpController : MonoBehaviour
 {
     public GameObject Gun;
     public Transform WeaponParent;
+    public bool gunPicked=false;
+    public static PickUpController Instance { get; private set; }
 
     private void Start()
     {
+        if (Instance == null)
+        {
+            Instance = this; // Assign the instance to the static property
+        }
+        else
+        {
+            Destroy(gameObject); // Destroy duplicate instances
+            return;
+        }
         Gun.GetComponent<Rigidbody>().isKinematic = true;
     }
 
@@ -35,6 +46,7 @@ public class PickUpController : MonoBehaviour
         Gun.transform.eulerAngles = new Vector3(Gun.transform.position.x, Gun.transform.position.y, Gun.transform.position.z);
         Gun.GetComponent<Rigidbody>().isKinematic = false;
         Gun.GetComponent<MeshCollider>().enabled = true;
+        gunPicked = false;
     }
     void Equip()
     {
@@ -45,6 +57,8 @@ public class PickUpController : MonoBehaviour
 
         Gun.GetComponent<MeshCollider>().enabled = false;
         Gun.transform.SetParent(WeaponParent);
+
+        gunPicked = true;
     }
 
     private void OnTriggerStay(Collider other)
