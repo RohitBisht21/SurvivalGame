@@ -7,6 +7,7 @@ public class CameraRot : MonoBehaviour
     public float mouseSensitivity;
     private Transform parent;
     Vector3 locRot;
+    float mouseX;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +18,7 @@ public class CameraRot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         locRot.x = locRot.x - mouseY;
@@ -25,9 +26,14 @@ public class CameraRot : MonoBehaviour
         locRot.y = transform.rotation.eulerAngles.y;
         locRot.z = 0;
 
+        
+        
+    }
+
+    private void LateUpdate()
+    {
         transform.rotation = Quaternion.Euler(locRot);
 
         parent.Rotate(Vector3.up, mouseX);
-        
     }
 }

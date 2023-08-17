@@ -41,4 +41,25 @@ public class Survival : MonoBehaviour
         HungerSlider.value = Hunger / MaxHunger;
         ThirstSlider.value = Thirst / MaxThirst;
     }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+       
+        if (hit.gameObject.CompareTag("Water"))
+        {
+            
+            ManageControls.Instance.animator.SetBool("Swimming", true);
+            ManageControls.Instance.moveSpeed = 1f; 
+            ManageControls.Instance.jumpSpeed = 0f;
+            PickUpController.Instance.Gun.SetActive(false);
+
+        }
+        else
+        {
+            ManageControls.Instance.animator.SetBool("Swimming", false);
+            ManageControls.Instance.moveSpeed = 7f;
+            ManageControls.Instance.jumpSpeed = 7f;
+            PickUpController.Instance.Gun.SetActive(true);
+        }
+    }
 }

@@ -15,9 +15,9 @@ public class ManageControls : MonoBehaviour
     private Vector3 hMovement;
     private Vector3 vMovement;
     private Vector3 velocity;
-    private float moveSpeed;
+    public float moveSpeed;
     private float mouseSpeed;
-    private float jumpSpeed;
+    public float jumpSpeed;
     private float gravity;
 
     // Start is called before the first frame update
@@ -85,4 +85,5 @@ public class ManageControls : MonoBehaviour
         characterController.Move(hMovement * moveSpeed * Time.deltaTime);
         characterController.Move(velocity * Time.deltaTime);
     }
+   
 }
