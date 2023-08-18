@@ -7,10 +7,14 @@ public class GunFire : MonoBehaviour
     public float damage = 10f;
     public float range = 100f;
     public ParticleSystem muzzleFlash;
+    private ParticleSystem impactParticles;
     public GameObject impactEffect;
-    public GameObject bulletHoles;
     public Camera fpsCam;
-    // Update is called once per frame
+
+    private void Start()
+    {
+        impactParticles = impactEffect.GetComponent<ParticleSystem>();
+    }
     void Update()
     {
         if (Input.GetButtonDown("Fire1") && PickUpController.Instance.gunPicked == true)
@@ -25,9 +29,12 @@ public class GunFire : MonoBehaviour
         if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
             Debug.Log(hit.transform.name);
-            GameObject impactGo=Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impactGo, 2f);
-            
+            impactEffect.transform.position= hit.point;
+            impactEffect.transform.rotation = Quaternion.LookRotation(hit.normal);
+            impactParticles.Stop();
+            impactParticles.Play();
+
+
         }
 
     }

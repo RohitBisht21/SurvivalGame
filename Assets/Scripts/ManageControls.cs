@@ -25,7 +25,7 @@ public class ManageControls : MonoBehaviour
     {
         if (Instance == null)
         {
-            Instance = this; // Assign the instance to the static property
+            Instance = this; // Assigning the instance to the static property
         }
         else
         {
