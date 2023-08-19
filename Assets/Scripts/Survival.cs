@@ -22,9 +22,16 @@ public class Survival : MonoBehaviour
     public float ThirstOT = 0.08f;
     public Slider ThirstSlider;
 
+    // for flashlight
+    public GameObject flashLight;
+    public bool flashOn;
+    public bool flashOff;
+
     private void Start()
     {
         Health = MaxHealth;
+        flashOff = true;
+        flashLight.SetActive(false);
     }
     // Update is called once per frame
     void Update()
@@ -33,6 +40,20 @@ public class Survival : MonoBehaviour
         Thirst = Thirst - ThirstOT * Time.deltaTime;
 
         UpdateSliders();
+
+        // flashlight control
+        if (flashOff && Input.GetButtonDown("F"))
+        {
+            flashLight.SetActive(true);
+            flashOff = false;
+            flashOn = true;
+        }
+        else if (flashOn && Input.GetButtonDown("F"))
+        {
+            flashLight.SetActive(false);
+            flashOff = true;
+            flashOn = false;
+        }
     }
 
     public void UpdateSliders()
@@ -60,6 +81,18 @@ public class Survival : MonoBehaviour
             ManageControls.Instance.moveSpeed = 7f;
             ManageControls.Instance.jumpSpeed = 7f;
             PickUpController.Instance.Gun.SetActive(true);
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        Health -= damage;
+        Health = Mathf.Clamp(Health, 0, MaxHealth);
+
+        UpdateSliders();
+        if(Health<=0)
+        {
+            Debug.Log("YOU ARE DEAD");
         }
     }
 }

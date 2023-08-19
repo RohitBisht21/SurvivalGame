@@ -10,7 +10,8 @@ public class EnemyController : MonoBehaviour
     public LayerMask whatIsGround, whatIsPlayer;
     public float health;
     private Animator enemyAnimator;
-
+    private float newSpeed = 5f;
+    private Survival playerSurvival;
 
     //For Patroling
     public Vector3 walkPoint;
@@ -25,11 +26,13 @@ public class EnemyController : MonoBehaviour
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
 
-    private void Awake()
+    private void Start()
     {
         player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
         enemyAnimator = GetComponent<Animator>();
+        playerSurvival =player.GetComponent<Survival>();
+
     }
     private void Update()
     {
@@ -46,6 +49,8 @@ public class EnemyController : MonoBehaviour
         if(!walkPointSet || agent.remainingDistance < 1f) SearchWalkPoint();
 
         if (walkPointSet)
+            enemyAnimator.SetBool("Running", false);
+        agent.speed = newSpeed - 3;
             enemyAnimator.SetBool("Walking", true);
             agent.SetDestination(walkPoint);
 
@@ -64,10 +69,14 @@ public class EnemyController : MonoBehaviour
     }
     private void ChasePlayer()
     {
+        enemyAnimator.SetBool("Attacking", false);
+        enemyAnimator.SetBool("Running", true);
+        agent.speed = newSpeed;
         agent.SetDestination(player.position);
     }    
     private void Attacking()
     {
+        enemyAnimator.SetBool("Attacking", true);
         //Stop enemy from moving
         agent.stoppingDistance = attackRange;
  
@@ -75,9 +84,7 @@ public class EnemyController : MonoBehaviour
 
         if (!alreadyAttacked)
         {
-            //Type of attack
-            
-
+            playerSurvival.TakeDamage(10);
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
@@ -87,12 +94,12 @@ public class EnemyController : MonoBehaviour
     {
         alreadyAttacked = false;
     }
-    private void TakeDamage(int damage)
-    {
-        health -= damage;
-        if (health < 0)
-            Invoke(nameof(DestroyEnemy), 0.5f);
-    }
+    //private void TakeDamage(int damage)
+    //{
+    //    health -= damage;
+    //    if (health < 0)
+    //        Invoke(nameof(DestroyEnemy), 0.5f);
+    //}
     private void DestroyEnemy()
     {
         Destroy(gameObject);

@@ -20,6 +20,8 @@ public class ManageControls : MonoBehaviour
     public float jumpSpeed;
     private float gravity;
 
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +44,7 @@ public class ManageControls : MonoBehaviour
         gravity =-15f;
         mouseSpeed = 100f;
         jumpSpeed = 7f;
+        
     }
 
     // Update is called once per frame
