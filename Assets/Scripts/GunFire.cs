@@ -29,6 +29,13 @@ public class GunFire : MonoBehaviour
         if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
             Debug.Log(hit.transform.name);
+
+            EnemyController enemyController = hit.transform.GetComponent<EnemyController>();
+            if (enemyController != null)
+            {
+                enemyController.TakeEnemyDamage(damage);
+                enemyController.PlayHitAnimation();
+            }
             impactEffect.transform.position= hit.point;
             impactEffect.transform.rotation = Quaternion.LookRotation(hit.normal);
             impactParticles.Stop();

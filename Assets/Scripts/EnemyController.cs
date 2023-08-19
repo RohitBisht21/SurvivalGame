@@ -42,17 +42,22 @@ public class EnemyController : MonoBehaviour
 
         if (!playerInSightRange && !playerInAttackRange) Patroling(); 
         if (playerInSightRange && !playerInAttackRange) ChasePlayer(); 
-        if (playerInSightRange && playerInAttackRange) Attacking(); 
+        if (playerInSightRange && playerInAttackRange) Attacking();
     }
     private void Patroling()
     {
-        if(!walkPointSet || agent.remainingDistance < 1f) SearchWalkPoint();
+        if(!walkPointSet || agent.remainingDistance <= 1f ) SearchWalkPoint();
 
         if (walkPointSet)
-            enemyAnimator.SetBool("Running", false);
-        agent.speed = newSpeed - 3;
+        {
+           // enemyAnimator.SetBool("Running", false);
             enemyAnimator.SetBool("Walking", true);
+            agent.speed = 3;
             agent.SetDestination(walkPoint);
+            //enemyAnimator.SetBool("isHit", false);
+            
+      
+        }
 
     }
     private void SearchWalkPoint()
@@ -70,6 +75,7 @@ public class EnemyController : MonoBehaviour
     private void ChasePlayer()
     {
         enemyAnimator.SetBool("Attacking", false);
+        enemyAnimator.SetBool("isHit", false);
         enemyAnimator.SetBool("Running", true);
         agent.speed = newSpeed;
         agent.SetDestination(player.position);
@@ -77,8 +83,8 @@ public class EnemyController : MonoBehaviour
     private void Attacking()
     {
         enemyAnimator.SetBool("Attacking", true);
-        //Stop enemy from moving
-        agent.stoppingDistance = attackRange;
+        enemyAnimator.SetBool("isHit", false);
+        
  
         transform.LookAt(player);
 
@@ -88,19 +94,19 @@ public class EnemyController : MonoBehaviour
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
-       
     }
     private void ResetAttack()
     {
         alreadyAttacked = false;
     }
-    //private void TakeDamage(int damage)
-    //{
-    //    health -= damage;
-    //    if (health < 0)
-    //        Invoke(nameof(DestroyEnemy), 0.5f);
-    //}
-    private void DestroyEnemy()
+    public void TakeEnemyDamage(float damage)
+    {
+        health -= damage;
+        if (health <= 0)
+            Invoke(nameof(DestroyEnemy), 2f);
+        
+    }
+    public void DestroyEnemy()
     {
         Destroy(gameObject);
     }
@@ -110,5 +116,12 @@ public class EnemyController : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackRange);
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, sightRange);
+    }
+    public void PlayHitAnimation()
+    {
+        if (enemyAnimator != null)
+        {
+            enemyAnimator.SetTrigger("Hit"); 
+        }
     }
 }
