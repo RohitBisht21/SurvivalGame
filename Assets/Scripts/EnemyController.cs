@@ -46,16 +46,15 @@ public class EnemyController : MonoBehaviour
     }
     private void Patroling()
     {
-        if(!walkPointSet || agent.remainingDistance <= 1f ) SearchWalkPoint();
+        if(!walkPointSet || agent.remainingDistance <= 3f ) SearchWalkPoint();
 
         if (walkPointSet)
         {
-           // enemyAnimator.SetBool("Running", false);
+            enemyAnimator.SetBool("Running", false);
             enemyAnimator.SetBool("Walking", true);
             agent.speed = 3;
             agent.SetDestination(walkPoint);
-            //enemyAnimator.SetBool("isHit", false);
-            
+            enemyAnimator.SetBool("isHit", false);
       
         }
 
@@ -85,7 +84,6 @@ public class EnemyController : MonoBehaviour
         enemyAnimator.SetBool("Attacking", true);
         enemyAnimator.SetBool("isHit", false);
         
- 
         transform.LookAt(player);
 
         if (!alreadyAttacked)
@@ -103,11 +101,15 @@ public class EnemyController : MonoBehaviour
     {
         health -= damage;
         if (health <= 0)
-            Invoke(nameof(DestroyEnemy), 2f);
-        
+        {
+            enemyAnimator.SetBool("isHit",false);
+            enemyAnimator.SetTrigger("Die");
+            Invoke(nameof(DestroyEnemy), 3f);
+        }
     }
     public void DestroyEnemy()
     {
+        
         Destroy(gameObject);
     }
     private void OnDrawGizmosSelected()
@@ -123,5 +125,6 @@ public class EnemyController : MonoBehaviour
         {
             enemyAnimator.SetTrigger("Hit"); 
         }
+       
     }
 }
