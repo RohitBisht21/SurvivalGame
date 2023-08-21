@@ -12,6 +12,7 @@ public class EnemyController : MonoBehaviour
     private Animator enemyAnimator;
     private float newSpeed = 5f;
     private Survival playerSurvival;
+    public ParticleSystem bloodParticles;
 
     //For Patroling
     public Vector3 walkPoint;
@@ -40,12 +41,24 @@ public class EnemyController : MonoBehaviour
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
-        if (!playerInSightRange && !playerInAttackRange) Patroling(); 
-        if (playerInSightRange && !playerInAttackRange) ChasePlayer(); 
-        if (playerInSightRange && playerInAttackRange) Attacking();
+        if (health > 0)
+        {
+            if (!playerInSightRange && !playerInAttackRange) Patroling();
+            if (playerInSightRange && !playerInAttackRange) ChasePlayer();
+            if (playerInSightRange && playerInAttackRange) Attacking();
+        }
+        else
+        {
+            // If health is 0 or less, stop all actions
+            agent.SetDestination(transform.position); // Stop the NavMeshAgent
+            enemyAnimator.SetBool("Running", false);
+            enemyAnimator.SetBool("Attacking", false);
+            enemyAnimator.SetBool("Walking", false);
+        }
     }
     private void Patroling()
     {
+        enemyAnimator.SetBool("NotDead", true);
         if(!walkPointSet || agent.remainingDistance <= 3f ) SearchWalkPoint();
 
         if (walkPointSet)
@@ -74,7 +87,6 @@ public class EnemyController : MonoBehaviour
     private void ChasePlayer()
     {
         enemyAnimator.SetBool("Attacking", false);
-        enemyAnimator.SetBool("isHit", false);
         enemyAnimator.SetBool("Running", true);
         agent.speed = newSpeed;
         agent.SetDestination(player.position);
@@ -82,7 +94,6 @@ public class EnemyController : MonoBehaviour
     private void Attacking()
     {
         enemyAnimator.SetBool("Attacking", true);
-        enemyAnimator.SetBool("isHit", false);
         
         transform.LookAt(player);
 
@@ -99,12 +110,14 @@ public class EnemyController : MonoBehaviour
     }
     public void TakeEnemyDamage(float damage)
     {
-        health -= damage;
-        if (health <= 0)
+        if (health > 0)
         {
-            enemyAnimator.SetBool("isHit",false);
-            enemyAnimator.SetTrigger("Die");
-            Invoke(nameof(DestroyEnemy), 3f);
+            health -= damage;
+            if (health <= 0)
+            {
+                enemyAnimator.SetTrigger("Die");
+                Invoke(nameof(DestroyEnemy), 3f);
+            }
         }
     }
     public void DestroyEnemy()
@@ -118,13 +131,5 @@ public class EnemyController : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackRange);
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, sightRange);
-    }
-    public void PlayHitAnimation()
-    {
-        if (enemyAnimator != null)
-        {
-            enemyAnimator.SetTrigger("Hit"); 
-        }
-       
     }
 }

@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class GunFire : MonoBehaviour
 {
-    public float damage = 10f;
+    public float damage = 2f;
     public float range = 100f;
     public ParticleSystem muzzleFlash;
     private ParticleSystem impactParticles;
     public GameObject impactEffect;
     public Camera fpsCam;
+    public float fireCooldown = 0.5f;
+    private float lastShotTime = 0f;
 
     private void Start()
     {
@@ -17,32 +19,39 @@ public class GunFire : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && PickUpController.Instance.gunPicked == true)
+        if (Input.GetButton("Fire1") && PickUpController.Instance.gunPicked == true)
         {
             Shoot();
         }
     }
     void Shoot()
     {
-        muzzleFlash.Play();
-        RaycastHit hit;
-        if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
+        if (Time.time - lastShotTime >= fireCooldown)
         {
-            Debug.Log(hit.transform.name);
-
-            EnemyController enemyController = hit.transform.GetComponent<EnemyController>();
-            if (enemyController != null)
+            lastShotTime = Time.time; // Update the last shot time
+            muzzleFlash.Play();
+            RaycastHit hit;
+            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
             {
-                enemyController.TakeEnemyDamage(damage);
-                enemyController.PlayHitAnimation();
+                Debug.Log(hit.transform.name);
+
+                EnemyController enemyController = hit.transform.GetComponent<EnemyController>();
+                if (enemyController != null)
+                {
+                    enemyController.TakeEnemyDamage(damage);
+
+                    if (enemyController.bloodParticles != null)
+                    {
+                        enemyController.bloodParticles.transform.position = hit.point;
+                        enemyController.bloodParticles.Play();
+                    }
+                }
+
+                impactEffect.transform.position = hit.point;
+                impactEffect.transform.rotation = Quaternion.LookRotation(hit.normal);
+                impactParticles.Stop();
+                impactParticles.Play();
             }
-            impactEffect.transform.position= hit.point;
-            impactEffect.transform.rotation = Quaternion.LookRotation(hit.normal);
-            impactParticles.Stop();
-            impactParticles.Play();
-
-
         }
-
     }
 }

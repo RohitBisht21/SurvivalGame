@@ -6,6 +6,7 @@ TagManager:
   tags:
   - FxTemporaire
   - Water
+  - Enemy
   layers:
   - Default
   - TransparentFX
