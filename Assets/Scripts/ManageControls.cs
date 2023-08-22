@@ -20,7 +20,7 @@ public class ManageControls : MonoBehaviour
     public float jumpSpeed;
     private float gravity;
 
-    
+   
 
     // Start is called before the first frame update
     void Start()
@@ -88,5 +88,6 @@ public class ManageControls : MonoBehaviour
         characterController.Move(hMovement * moveSpeed * Time.deltaTime);
         characterController.Move(velocity * Time.deltaTime);
     }
-   
+    
+
 }

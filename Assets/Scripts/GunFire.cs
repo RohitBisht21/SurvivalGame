@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GunFire : MonoBehaviour
 {
-    public float damage = 2f;
+    public float damage;
     public float range = 100f;
     public ParticleSystem muzzleFlash;
     private ParticleSystem impactParticles;
@@ -15,9 +15,10 @@ public class GunFire : MonoBehaviour
 
     private void Start()
     {
+        damage = 2f;
         impactParticles = impactEffect.GetComponent<ParticleSystem>();
     }
-    void Update()
+    void FixedUpdate()
     {
         if (Input.GetButton("Fire1") && PickUpController.Instance.gunPicked == true)
         {
@@ -38,7 +39,7 @@ public class GunFire : MonoBehaviour
                 EnemyController enemyController = hit.transform.GetComponent<EnemyController>();
                 if (enemyController != null)
                 {
-                    enemyController.TakeEnemyDamage(damage);
+                    enemyController.TakeEnemyDamage(damage, hit.point);
 
                     if (enemyController.bloodParticles != null)
                     {

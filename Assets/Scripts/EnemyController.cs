@@ -13,6 +13,9 @@ public class EnemyController : MonoBehaviour
     private float newSpeed = 5f;
     private Survival playerSurvival;
     public ParticleSystem bloodParticles;
+    public Transform headTransform;
+    public float headHitRadius = 0.2f;
+    private bool hasBeenHit = false;
 
     //For Patroling
     public Vector3 walkPoint;
@@ -33,7 +36,7 @@ public class EnemyController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         enemyAnimator = GetComponent<Animator>();
         playerSurvival =player.GetComponent<Survival>();
-
+        timeBetweenAttacks = 0.5f;
     }
     private void Update()
     {
@@ -43,9 +46,26 @@ public class EnemyController : MonoBehaviour
 
         if (health > 0)
         {
-            if (!playerInSightRange && !playerInAttackRange) Patroling();
-            if (playerInSightRange && !playerInAttackRange) ChasePlayer();
-            if (playerInSightRange && playerInAttackRange) Attacking();
+            if (!playerInSightRange && !playerInAttackRange)
+            {
+                if (hasBeenHit)
+                {
+                    // If the player has hit the enemy, start chasing
+                    ChasePlayer();
+                }
+                else
+                {
+                    Patroling();
+                }
+            }
+            else if (playerInSightRange && !playerInAttackRange)
+            {
+                ChasePlayer();
+            }
+            else if (playerInSightRange && playerInAttackRange)
+            {
+                Attacking();
+            }
         }
         else
         {
@@ -100,6 +120,7 @@ public class EnemyController : MonoBehaviour
         if (!alreadyAttacked)
         {
             playerSurvival.TakeDamage(10);
+            
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
@@ -108,15 +129,30 @@ public class EnemyController : MonoBehaviour
     {
         alreadyAttacked = false;
     }
-    public void TakeEnemyDamage(float damage)
+    public void TakeEnemyDamage(float damage, Vector3 hitPoint)
     {
         if (health > 0)
         {
+            bool hitOnHead = Vector3.Distance(hitPoint, headTransform.position) <= headHitRadius;
+
             health -= damage;
+    
+            if(hitOnHead)
+            {
+                // Play head hit animation
+                enemyAnimator.SetTrigger("Hit");
+            }
             if (health <= 0)
             {
                 enemyAnimator.SetTrigger("Die");
                 Invoke(nameof(DestroyEnemy), 3f);
+            }
+
+            hasBeenHit = true; // Set the hasBeenHit flag
+            if (!playerInSightRange)
+            {
+                // If the player is not initially in sight range, start chasing
+                ChasePlayer();
             }
         }
     }
@@ -125,6 +161,7 @@ public class EnemyController : MonoBehaviour
         
         Destroy(gameObject);
     }
+   
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
