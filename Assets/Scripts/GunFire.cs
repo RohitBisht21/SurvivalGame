@@ -32,8 +32,12 @@ public class GunFire : MonoBehaviour
             lastShotTime = Time.time; // Update the last shot time
             muzzleFlash.Play();
             RaycastHit hit;
+
+            int gunLayer = LayerMask.NameToLayer("Gun"); // Get the Gun layer index
+            int layerMask = ~(1 << gunLayer); // Create a layer mask that excludes the Gun layer
             if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
             {
+                Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * range, Color.red);
                 Debug.Log(hit.transform.name);
 
                 EnemyController enemyController = hit.transform.GetComponent<EnemyController>();
