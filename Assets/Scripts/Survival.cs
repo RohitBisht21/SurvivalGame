@@ -27,6 +27,21 @@ public class Survival : MonoBehaviour
     public bool flashOn;
     public bool flashOff;
 
+    public static Survival Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this; // Assigning the instance to the static property
+        }
+        else
+        {
+            Destroy(gameObject); // Destroy duplicate instances
+            return;
+        }
+    }
+
     private void Start()
     {
         Health = MaxHealth;
@@ -95,4 +110,5 @@ public class Survival : MonoBehaviour
             Debug.Log("YOU ARE DEAD");
         }
     }
+
 }

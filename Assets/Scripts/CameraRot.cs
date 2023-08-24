@@ -6,6 +6,7 @@ public class CameraRot : MonoBehaviour
 {
     public float mouseSensitivity;
     private Transform parent;
+    public Transform playerSpine;
     Vector3 locRot;
     float mouseX;
     float mouseY;
@@ -26,6 +27,14 @@ public class CameraRot : MonoBehaviour
         locRot.x = Mathf.Clamp(locRot.x, -50, 40);
         locRot.y = transform.rotation.eulerAngles.y;
         locRot.z = 0;
+
+        // Apply rotation to the player's spine component
+        if (playerSpine != null)
+        {
+            Vector3 spineRot = playerSpine.localRotation.eulerAngles;
+            spineRot.x = locRot.x;
+            playerSpine.localRotation = Quaternion.Euler(spineRot);
+        }
     }
 
     private void LateUpdate()
