@@ -27,6 +27,7 @@ public class Survival : MonoBehaviour
     public bool flashOn;
     public bool flashOff;
 
+    private float healthDecreaseRate = 1f;
     public static Survival Instance { get; private set; }
 
     private void Awake()
@@ -51,10 +52,19 @@ public class Survival : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Hunger = Hunger - HungerOT * Time.deltaTime;
-        Thirst = Thirst - ThirstOT * Time.deltaTime;
+        Hunger = Mathf.Clamp(Hunger - HungerOT * Time.deltaTime, 0, MaxHunger);
+        Thirst = Mathf.Clamp(Thirst - ThirstOT * Time.deltaTime, 0, MaxThirst);
 
         UpdateSliders();
+
+        if (Hunger <= 0 && Thirst <= 0)
+        {
+            TakeDamage(healthDecreaseRate * 2 * Time.deltaTime); // Health decreases faster when both are empty
+        }
+        else if (Hunger <= 0 || Thirst <= 0)
+        {
+            TakeDamage(healthDecreaseRate * Time.deltaTime); // Regular health decrease
+        }
 
         // flashlight control
         if (flashOff && Input.GetButtonDown("F"))
