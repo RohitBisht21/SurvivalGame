@@ -78,7 +78,7 @@ public class EnemyController : MonoBehaviour
     }
     private void Patroling()
     {
-        enemyAnimator.SetBool("NotDead", true);
+      
         if(!walkPointSet || agent.remainingDistance <= 3f ) SearchWalkPoint();
 
         if (walkPointSet)

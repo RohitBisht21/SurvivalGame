@@ -46,6 +46,7 @@ public class PickUpController : MonoBehaviour
         Gun.transform.eulerAngles = new Vector3(Gun.transform.position.x, Gun.transform.position.y, Gun.transform.position.z);
         Gun.GetComponent<Rigidbody>().isKinematic = false;
         Gun.GetComponent<MeshCollider>().enabled = true;
+        Gun.GetComponent<BoxCollider>().enabled = true;
         gunPicked = false;
     }
     void Equip()
@@ -55,6 +56,7 @@ public class PickUpController : MonoBehaviour
         Gun.transform.position = WeaponParent.transform.position;
         Gun.transform.rotation = WeaponParent.transform.rotation;
 
+        Gun.GetComponent<BoxCollider>().enabled = false;
         Gun.GetComponent<MeshCollider>().enabled = false;
         Gun.transform.SetParent(WeaponParent);
 
@@ -73,4 +75,5 @@ public class PickUpController : MonoBehaviour
 
         }
     }
+   
 }

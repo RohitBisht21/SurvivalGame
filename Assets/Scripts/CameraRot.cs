@@ -32,5 +32,7 @@ public class CameraRot : MonoBehaviour
     {
         transform.rotation = Quaternion.Euler(locRot);
         parent.Rotate(Vector3.up, mouseX);
+
+       
     }
 }

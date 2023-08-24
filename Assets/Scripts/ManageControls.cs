@@ -40,7 +40,7 @@ public class ManageControls : MonoBehaviour
         animator = tempPlayer.transform.GetComponent<Animator>();
 
         // initialize var
-        moveSpeed = 17f;
+        moveSpeed = 20f;
         gravity =-15f;
         mouseSpeed = 100f;
         jumpSpeed = 7f;

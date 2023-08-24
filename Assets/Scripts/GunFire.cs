@@ -10,7 +10,7 @@ public class GunFire : MonoBehaviour
     private ParticleSystem impactParticles;
     public GameObject impactEffect;
     public Camera fpsCam;
-    public float fireCooldown = 0.5f;
+    public float fireCooldown = 0.25f;
     private float lastShotTime = 0f;
 
     private void Start()
@@ -24,6 +24,10 @@ public class GunFire : MonoBehaviour
         {
             Shoot();
         }
+        else
+        {
+            ManageControls.Instance.animator.SetBool("shoot", false); // Stop the shoot animation when not firing
+        }
     }
     void Shoot()
     {
@@ -33,11 +37,9 @@ public class GunFire : MonoBehaviour
             muzzleFlash.Play();
             RaycastHit hit;
 
-            int gunLayer = LayerMask.NameToLayer("Gun"); // Get the Gun layer index
-            int layerMask = ~(1 << gunLayer); // Create a layer mask that excludes the Gun layer
             if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
             {
-                Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * range, Color.red);
+                ManageControls.Instance.animator.SetBool("shoot", true);
                 Debug.Log(hit.transform.name);
 
                 EnemyController enemyController = hit.transform.GetComponent<EnemyController>();
@@ -57,6 +59,7 @@ public class GunFire : MonoBehaviour
                 impactParticles.Stop();
                 impactParticles.Play();
             }
+           
         }
     }
 }
