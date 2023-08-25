@@ -9,7 +9,7 @@ public class EnemyController : MonoBehaviour
     public Transform player;
     public LayerMask whatIsGround, whatIsPlayer;
     public float health;
-    private Animator enemyAnimator;
+    public Animator enemyAnimator;
     private float newSpeed = 5f;
     private Survival playerSurvival;
     public ParticleSystem bloodParticles;
@@ -34,7 +34,7 @@ public class EnemyController : MonoBehaviour
     {
         player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
-        enemyAnimator = GetComponent<Animator>();
+        //enemyAnimator = GetComponent<Animator>();
         playerSurvival =player.GetComponent<Survival>();
         timeBetweenAttacks = 0.5f;
     }
