@@ -10,13 +10,12 @@ public class EnemyController : MonoBehaviour
     public LayerMask whatIsGround, whatIsPlayer;
     public float health;
     public Animator enemyAnimator;
-    public float newSpeed = 5f;
+    private float newSpeed = 5f;
     private Survival playerSurvival;
     public ParticleSystem bloodParticles;
     public Transform headTransform;
     public float headHitRadius = 0.2f;
     private bool hasBeenHit = false;
-    public bool isZombie = true;
 
     //For Patroling
     public Vector3 walkPoint;
@@ -35,6 +34,7 @@ public class EnemyController : MonoBehaviour
     {
         player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
+        //enemyAnimator = GetComponent<Animator>();
         playerSurvival =player.GetComponent<Survival>();
         timeBetweenAttacks = 0.5f;
     }
@@ -85,7 +85,7 @@ public class EnemyController : MonoBehaviour
         {
             enemyAnimator.SetBool("Running", false);
             enemyAnimator.SetBool("Walking", true);
-            agent.speed = 2f;
+            agent.speed = 3;
             agent.SetDestination(walkPoint);
             enemyAnimator.SetBool("isHit", false);
       
@@ -159,25 +159,7 @@ public class EnemyController : MonoBehaviour
     public void DestroyEnemy()
     {
         
-        if (isZombie)
-        {
-            // Return the zombie to the pool for reuse
-            gameObject.SetActive(false);
-        }
-        else
-        {
-            // Destroy boss-level enemy
-            Destroy(gameObject);
-        }
-    }
-
-     // Reset the properties of the zombie when it's respawned
-    public void ResetZombieProperties()
-    {
-        health = 10f;
-        hasBeenHit = false;
-        alreadyAttacked = false;
-        
+        Destroy(gameObject);
     }
    
     private void OnDrawGizmosSelected()

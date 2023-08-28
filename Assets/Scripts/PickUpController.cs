@@ -9,8 +9,7 @@ public class PickUpController : MonoBehaviour
     public bool gunPicked=false;
     public static PickUpController Instance { get; private set; }
 
-
-    void Awake()
+    private void Start()
     {
         if (Instance == null)
         {
@@ -21,9 +20,6 @@ public class PickUpController : MonoBehaviour
             Destroy(gameObject); // Destroy duplicate instances
             return;
         }
-    }
-    private void Start()
-    {
         Gun.GetComponent<Rigidbody>().isKinematic = true;
     }
 

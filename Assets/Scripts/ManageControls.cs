@@ -20,7 +20,10 @@ public class ManageControls : MonoBehaviour
     public float jumpSpeed;
     private float gravity;
 
-   void Awake()
+   
+
+    // Start is called before the first frame update
+    void Start()
     {
         if (Instance == null)
         {
@@ -31,11 +34,6 @@ public class ManageControls : MonoBehaviour
             Destroy(gameObject); // Destroy duplicate instances
             return;
         }
-   }
-
-    // Start is called before the first frame update
-    void Start()
-    {
         //Get required components
         GameObject tempPlayer = GameObject.FindGameObjectWithTag("Player");
         characterController = tempPlayer.GetComponent<CharacterController>();
