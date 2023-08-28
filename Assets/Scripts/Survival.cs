@@ -27,6 +27,7 @@ public class Survival : MonoBehaviour
     public bool flashOn;
     public bool flashOff;
 
+    public TakeDamage damageEffect;
     private float healthDecreaseRate = 1f;
     public static Survival Instance { get; private set; }
 
@@ -119,6 +120,7 @@ public class Survival : MonoBehaviour
         {
             Debug.Log("YOU ARE DEAD");
         }
+        damageEffect.StartDamageEffect();
     }
 
 }

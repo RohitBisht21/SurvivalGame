@@ -119,7 +119,7 @@ public class EnemyController : MonoBehaviour
 
         if (!alreadyAttacked)
         {
-            playerSurvival.TakeDamage(10);
+            playerSurvival.TakeDamage(5);
             
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);

@@ -24,10 +24,32 @@ public class TakeDamage : MonoBehaviour
             _vignette.enabled.Override(false);
         }
     }
-
-    // Update is called once per frame
-    void Update()
+    public void StartDamageEffect()
     {
-        
+        StartCoroutine(TakeDamageEffect());
+    }
+
+    private IEnumerator TakeDamageEffect()
+    {
+        intensity = 0.4f;
+
+        _vignette.enabled.Override(true);
+        _vignette.intensity.Override(0.4f);
+
+        yield return new WaitForSeconds(0.4f);
+
+        while(intensity>0)
+        {
+            intensity -= 0.01f;
+
+            if (intensity < 0) intensity = 0;
+
+            _vignette.intensity.Override(intensity);
+
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        _vignette.enabled.Override(false);
+        yield break;
     }
 }
