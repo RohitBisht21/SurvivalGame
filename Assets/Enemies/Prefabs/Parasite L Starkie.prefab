@@ -5283,7 +5283,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3146876679358574537}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.55, z: 0.196}
+  m_LocalPosition: {x: 0, y: 1.55, z: 0.468}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10542,10 +10542,11 @@ MonoBehaviour:
   bloodParticles: {fileID: 3361318480032793704}
   headTransform: {fileID: 6359231674272582547}
   headHitRadius: 0.2
+  isZombie: 1
   walkPoint: {x: 0, y: 0, z: 0}
   walkPointRange: 20
   timeBetweenAttacks: 0.5
-  sightRange: 10
+  sightRange: 15
   attackRange: 2
   playerInSightRange: 0
   playerInAttackRange: 0

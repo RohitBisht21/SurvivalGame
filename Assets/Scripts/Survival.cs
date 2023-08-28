@@ -28,7 +28,11 @@ public class Survival : MonoBehaviour
     public bool flashOff;
 
     public TakeDamage damageEffect;
+
     private float healthDecreaseRate = 1f;
+
+   
+    
     public static Survival Instance { get; private set; }
 
     private void Awake()
@@ -49,6 +53,7 @@ public class Survival : MonoBehaviour
         Health = MaxHealth;
         flashOff = true;
         flashLight.SetActive(false);
+        
     }
     // Update is called once per frame
     void Update()
@@ -123,4 +128,9 @@ public class Survival : MonoBehaviour
         damageEffect.StartDamageEffect();
     }
 
+    public void IncreaseHunger(float value)
+    {
+        Hunger = Mathf.Clamp(Hunger + value, 0, MaxHunger);
+        UpdateSliders();
+    }
 }

@@ -6100,10 +6100,11 @@ MonoBehaviour:
   bloodParticles: {fileID: 683758153256093398}
   headTransform: {fileID: 4452227477592805830}
   headHitRadius: 0.2
+  isZombie: 1
   walkPoint: {x: 0, y: 0, z: 0}
   walkPointRange: 20
   timeBetweenAttacks: 0.5
-  sightRange: 10
+  sightRange: 15
   attackRange: 2
   playerInSightRange: 0
   playerInAttackRange: 0

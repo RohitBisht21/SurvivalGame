@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 4471028711787792485}
   - component: {fileID: 6887668675494114376}
   - component: {fileID: 4132429684683699732}
+  - component: {fileID: 3816573667645177354}
+  - component: {fileID: -2692237213274518711}
   m_Layer: 0
   m_Name: TomatoPuree_41 Tris
   m_TagString: Untagged
@@ -138,6 +140,31 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 3a45114cc17eb34449796839cf6f0a17, type: 3}
+--- !u!65 &3816573667645177354
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4565325908604275417}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.3102446, y: 5.87734, z: 9.888954}
+  m_Center: {x: 0, y: 0.9656465, z: -0.30752182}
+--- !u!114 &-2692237213274518711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4565325908604275417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e732bb63046c7b428afdfd26ab93d1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4565734271548351573
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 4376226271233817222}
   - component: {fileID: 5117910052399067513}
   - component: {fileID: 4125634721229684944}
+  - component: {fileID: 7741870914056352745}
+  - component: {fileID: 2539196278564219446}
   m_Layer: 0
   m_Name: Cheese_High__204_Tris_
   m_TagString: Untagged
@@ -115,3 +117,28 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: ac178adc44d1a8342b828a2bb154a083, type: 3}
+--- !u!65 &7741870914056352745
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4390560120857944564}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.8235664, y: 2.7078106, z: 5.8235664}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2539196278564219446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4390560120857944564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e732bb63046c7b428afdfd26ab93d1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

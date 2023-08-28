@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 7272049575559094719}
   - component: {fileID: 4063878215349838878}
   - component: {fileID: 9164739142038303599}
+  - component: {fileID: 5073334170117914042}
+  - component: {fileID: -944674150308706021}
   m_Layer: 0
   m_Name: Meat_High__160_Tris_
   m_TagString: Untagged
@@ -115,3 +117,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!65 &5073334170117914042
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7259180074398747891}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10.538777, y: 3.3683915, z: 8.742102}
+  m_Center: {x: -0.26938975, y: 0.48529747, z: -0.008397402}
+--- !u!114 &-944674150308706021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7259180074398747891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e732bb63046c7b428afdfd26ab93d1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
