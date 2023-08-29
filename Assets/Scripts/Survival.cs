@@ -30,9 +30,11 @@ public class Survival : MonoBehaviour
     public TakeDamage damageEffect;
 
     private float healthDecreaseRate = 1f;
+    private CharacterController characterController;
+    private float fallStartHeight;
+    public float fallDamageMultiplier = 0.5f;
+    private bool isFalling = false;
 
-   
-    
     public static Survival Instance { get; private set; }
 
     private void Awake()
@@ -53,7 +55,7 @@ public class Survival : MonoBehaviour
         Health = MaxHealth;
         flashOff = true;
         flashLight.SetActive(false);
-        
+        characterController = GetComponent<CharacterController>();
     }
     // Update is called once per frame
     void Update()
@@ -72,6 +74,28 @@ public class Survival : MonoBehaviour
             TakeDamage(healthDecreaseRate * Time.deltaTime); // Regular health decrease
         }
 
+
+        // Check for falling
+        if (characterController.isGrounded)
+        {
+            if (isFalling)
+            {
+                isFalling = false;
+                float fallDistance = fallStartHeight - transform.position.y;
+                if (fallDistance > 0.0f && fallDistance > 10.0f) // Adjust the threshold if needed
+                {
+                    float fallDamage = fallDistance * fallDamageMultiplier;
+                    TakeDamage(fallDamage);
+                }
+                fallStartHeight = transform.position.y; // Reset fallStartHeight after calculating fall damage
+            }
+        }
+        else
+        {
+            isFalling = true;
+        }
+
+
         // flashlight control
         if (flashOff && Input.GetButtonDown("F"))
         {
@@ -85,6 +109,7 @@ public class Survival : MonoBehaviour
             flashOff = true;
             flashOn = false;
         }
+
     }
 
     public void UpdateSliders()
@@ -131,6 +156,11 @@ public class Survival : MonoBehaviour
     public void IncreaseHunger(float value)
     {
         Hunger = Mathf.Clamp(Hunger + value, 0, MaxHunger);
+        UpdateSliders();
+    }
+    public void UseHealthKit(float value)
+    {
+        Health = Mathf.Clamp(Health + value, 0, MaxHealth);
         UpdateSliders();
     }
 }

@@ -74,6 +74,7 @@ public class EnemyController : MonoBehaviour
             enemyAnimator.SetBool("Running", false);
             enemyAnimator.SetBool("Attacking", false);
             enemyAnimator.SetBool("Walking", false);
+            enemyAnimator.SetBool("isHit", true);
         }
     }
     private void Patroling()

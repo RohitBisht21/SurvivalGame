@@ -20,7 +20,7 @@ public class ManageControls : MonoBehaviour
     public float jumpSpeed;
     private float gravity;
 
-   void Awake()
+    void Awake()
     {
         if (Instance == null)
         {
@@ -79,6 +79,7 @@ public class ManageControls : MonoBehaviour
         }
 
     }
+
     private void FixedUpdate()
     {
         // input forward/backward
@@ -89,7 +90,7 @@ public class ManageControls : MonoBehaviour
         characterController.Move(vMovement * moveSpeed * Time.deltaTime);
         characterController.Move(hMovement * moveSpeed * Time.deltaTime);
         characterController.Move(velocity * Time.deltaTime);
+
     }
-    
 
 }
