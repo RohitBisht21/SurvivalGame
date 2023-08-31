@@ -31,8 +31,7 @@ public class AudioManager : MonoBehaviour
             s.source.spread = s.spread;
         }
     }
-
-    // Update is called once per frame
+   
     public void Play(string name)
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);

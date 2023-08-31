@@ -10,6 +10,7 @@ public class HealthKit : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            AudioManager.Instance.Play("ItemPick");
             Survival.Instance.UseHealthKit(healthIncrement);
             gameObject.SetActive(false);
         }

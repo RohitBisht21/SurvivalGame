@@ -104,12 +104,14 @@ public class Survival : MonoBehaviour
             flashLight.SetActive(true);
             flashOff = false;
             flashOn = true;
+            AudioManager.Instance.Play("Flash");
         }
         else if (flashOn && Input.GetButtonDown("F"))
         {
             flashLight.SetActive(false);
             flashOff = true;
             flashOn = false;
+            AudioManager.Instance.Play("Flash");
         }
 
         }

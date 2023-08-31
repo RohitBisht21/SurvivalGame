@@ -9,6 +9,7 @@ public class Food : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            AudioManager.Instance.Play("ItemPick");
             Survival.Instance.IncreaseHunger(hungerValue);
             gameObject.SetActive(false);
         }
