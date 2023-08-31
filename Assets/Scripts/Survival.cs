@@ -35,6 +35,8 @@ public class Survival : MonoBehaviour
     public float fallDamageMultiplier = 0.5f;
     private bool isFalling = false;
 
+    private bool isMovingInWater = false;
+
     public static Survival Instance { get; private set; }
 
     private void Awake()
@@ -110,7 +112,8 @@ public class Survival : MonoBehaviour
             flashOn = false;
         }
 
-    }
+        }
+    
 
     public void UpdateSliders()
     {
@@ -124,12 +127,35 @@ public class Survival : MonoBehaviour
        
         if (hit.gameObject.CompareTag("Water"))
         {
-            
+           
             ManageControls.Instance.animator.SetBool("Swimming", true);
             ManageControls.Instance.moveSpeed = 1f; 
             ManageControls.Instance.jumpSpeed = 0f;
             PickUpController.Instance.Gun.SetActive(false);
+            AudioManager.Instance.Stop("Running");
 
+            // Check for player movement in water and play/stop swimming sound
+            float movementInput = Mathf.Abs(ManageControls.Instance.inputX) + Mathf.Abs(ManageControls.Instance.inputZ);
+                
+                if (movementInput > 0.1f) // Adjust the threshold as needed
+                {
+                    if (!isMovingInWater)
+                    {
+                        isMovingInWater = true;
+                        AudioManager.Instance.Play("WaterWalk");
+                    }
+
+                }
+                else
+                {
+                    if (isMovingInWater)
+                    {
+                        isMovingInWater = false;
+                        AudioManager.Instance.Stop("WaterWalk");
+                    }
+                }
+            
+            
         }
         else
         {
@@ -137,6 +163,8 @@ public class Survival : MonoBehaviour
             ManageControls.Instance.moveSpeed = 7f;
             ManageControls.Instance.jumpSpeed = 7f;
             PickUpController.Instance.Gun.SetActive(true);
+            AudioManager.Instance.Stop("WaterWalk");
+
         }
     }
 
@@ -163,4 +191,5 @@ public class Survival : MonoBehaviour
         Health = Mathf.Clamp(Health + value, 0, MaxHealth);
         UpdateSliders();
     }
+
 }

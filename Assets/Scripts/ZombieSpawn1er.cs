@@ -13,6 +13,8 @@ public class ZombieSpawn1er : MonoBehaviour
     public List<ZombieType> zombieTypes = new List<ZombieType>();
     public Vector3 spawnAreaCenter;
     public Vector3 spawnAreaSize;
+    
+    
 
     private List<List<GameObject>> zombiePools = new List<List<GameObject>>();
 

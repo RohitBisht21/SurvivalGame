@@ -52,6 +52,7 @@ public class PickUpController : MonoBehaviour
         Gun.GetComponent<MeshCollider>().enabled = true;
         Gun.GetComponent<BoxCollider>().enabled = true;
         gunPicked = false;
+        AudioManager.Instance.Play("ItemPick");
     }
     void Equip()
     {
@@ -65,6 +66,7 @@ public class PickUpController : MonoBehaviour
         Gun.transform.SetParent(WeaponParent);
 
         gunPicked = true;
+        AudioManager.Instance.Play("ItemPick");
     }
 
     private void OnTriggerStay(Collider other)
