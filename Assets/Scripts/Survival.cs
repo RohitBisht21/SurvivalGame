@@ -172,6 +172,7 @@ public class Survival : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        AudioManager.Instance.Play("PlayerHit");
         Health -= damage;
         Health = Mathf.Clamp(Health, 0, MaxHealth);
 

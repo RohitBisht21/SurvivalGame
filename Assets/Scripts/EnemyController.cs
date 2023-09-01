@@ -10,7 +10,7 @@ public class EnemyController : MonoBehaviour
     public LayerMask whatIsGround, whatIsPlayer;
     public float health;
     public Animator enemyAnimator;
-    public float newSpeed = 5f;
+    public float newSpeed = 8f;
     private Survival playerSurvival;
     public ParticleSystem bloodParticles;
     public Transform headTransform;
@@ -30,6 +30,8 @@ public class EnemyController : MonoBehaviour
     //For States
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
+
+    
 
     private void Start()
     {
@@ -61,10 +63,12 @@ public class EnemyController : MonoBehaviour
             else if (playerInSightRange && !playerInAttackRange)
             {
                 ChasePlayer();
+               
             }
             else if (playerInSightRange && playerInAttackRange)
             {
                 Attacking();
+                
             }
         }
         else
@@ -79,8 +83,7 @@ public class EnemyController : MonoBehaviour
     }
     private void Patroling()
     {
-      
-        if(!walkPointSet || agent.remainingDistance <= 3f ) SearchWalkPoint();
+        if (!walkPointSet || agent.remainingDistance <= 3f ) SearchWalkPoint();
 
         if (walkPointSet)
         {
@@ -91,7 +94,7 @@ public class EnemyController : MonoBehaviour
             enemyAnimator.SetBool("isHit", false);
       
         }
-
+       
     }
     private void SearchWalkPoint()
     {
@@ -111,9 +114,11 @@ public class EnemyController : MonoBehaviour
         enemyAnimator.SetBool("Running", true);
         agent.speed = newSpeed;
         agent.SetDestination(player.position);
+        AudioManager.Instance.Play("ZombieMoan");
     }    
     private void Attacking()
     {
+       
         enemyAnimator.SetBool("Attacking", true);
         
         transform.LookAt(player);
@@ -125,6 +130,8 @@ public class EnemyController : MonoBehaviour
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
+        
+
     }
     private void ResetAttack()
     {
@@ -137,14 +144,15 @@ public class EnemyController : MonoBehaviour
             bool hitOnHead = Vector3.Distance(hitPoint, headTransform.position) <= headHitRadius;
 
             health -= damage;
-    
-            if(hitOnHead)
+
+            if (hitOnHead)
             {
                 // Play head hit animation
                 enemyAnimator.SetTrigger("Hit");
             }
             if (health <= 0)
             {
+                AudioManager.Instance.Play("ZombieDead");
                 enemyAnimator.SetTrigger("Die");
                 Invoke(nameof(DestroyEnemy), 3f);
             }

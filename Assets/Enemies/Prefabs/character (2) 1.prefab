@@ -1369,7 +1369,7 @@ GameObject:
   - component: {fileID: 5868275776615764636}
   - component: {fileID: 1624292852030267234}
   m_Layer: 0
-  m_Name: character (2)
+  m_Name: character (2) 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1453,7 +1453,7 @@ MonoBehaviour:
     m_Bits: 8
   health: 10
   enemyAnimator: {fileID: 734064849436400324}
-  newSpeed: 5
+  newSpeed: 7
   bloodParticles: {fileID: 4797059877300018015}
   headTransform: {fileID: 4366467306057232571}
   headHitRadius: 0.2

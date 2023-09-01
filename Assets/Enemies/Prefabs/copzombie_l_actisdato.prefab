@@ -11596,7 +11596,7 @@ MonoBehaviour:
     m_Bits: 8
   health: 10
   enemyAnimator: {fileID: -2484372517092993766}
-  newSpeed: 5
+  newSpeed: 7
   bloodParticles: {fileID: 409955461842115210}
   headTransform: {fileID: 2467822553411806861}
   headHitRadius: 0.2
