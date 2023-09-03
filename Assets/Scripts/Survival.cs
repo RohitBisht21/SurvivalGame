@@ -77,24 +77,24 @@ public class Survival : MonoBehaviour
         }
 
 
-        // Check for falling
-        if (characterController.isGrounded)
+             // Check for falling
+        if (!characterController.isGrounded)
         {
-            if (isFalling)
+            if (!isFalling)
             {
-                isFalling = false;
-                float fallDistance = fallStartHeight - transform.position.y;
-                if (fallDistance > 0.0f && fallDistance > 10.0f) // Adjust the threshold if needed
-                {
-                    float fallDamage = fallDistance * fallDamageMultiplier;
-                    TakeDamage(fallDamage);
-                }
-                fallStartHeight = transform.position.y; // Reset fallStartHeight after calculating fall damage
+                isFalling = true;
+                fallStartHeight = transform.position.y;
             }
         }
-        else
+        else if (isFalling)
         {
-            isFalling = true;
+            isFalling = false;
+            float fallDistance = fallStartHeight - transform.position.y;
+            if (fallDistance > 10.0f) // Adjust the threshold if needed
+            {
+                float fallDamage = fallDistance * fallDamageMultiplier;
+                TakeDamage(fallDamage);
+            }
         }
 
 

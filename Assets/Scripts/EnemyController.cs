@@ -17,6 +17,7 @@ public class EnemyController : MonoBehaviour
     public float headHitRadius = 0.2f;
     private bool hasBeenHit = false;
     public bool isZombie = true;
+    public bool isBoss = false;
 
     //For Patroling
     public Vector3 walkPoint;
@@ -94,7 +95,10 @@ public class EnemyController : MonoBehaviour
             enemyAnimator.SetBool("isHit", false);
       
         }
-       
+       if(isBoss)
+       {
+              AudioManager.Instance.Play("BullBreathing");
+       }
     }
     private void SearchWalkPoint()
     {
@@ -114,7 +118,14 @@ public class EnemyController : MonoBehaviour
         enemyAnimator.SetBool("Running", true);
         agent.speed = newSpeed;
         agent.SetDestination(player.position);
-        AudioManager.Instance.Play("ZombieMoan");
+        if(isBoss)
+        {
+            AudioManager.Instance.Play("BullMoan");
+        }
+        else
+        {
+            AudioManager.Instance.Play("ZombieMoan");
+        }
     }    
     private void Attacking()
     {
@@ -152,7 +163,16 @@ public class EnemyController : MonoBehaviour
             }
             if (health <= 0)
             {
-                AudioManager.Instance.Play("ZombieDead");
+                if(isBoss)
+                {
+                    AudioManager.Instance.Play("BullDead");
+                    AudioManager.Instance.Stop("BullBreathing");
+                    AudioManager.Instance.Stop("BullMoan");
+                }
+                else
+                {
+                    AudioManager.Instance.Play("ZombieDead");
+                }
                 enemyAnimator.SetTrigger("Die");
                 Invoke(nameof(DestroyEnemy), 3f);
             }
