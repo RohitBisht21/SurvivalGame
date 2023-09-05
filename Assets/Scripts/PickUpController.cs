@@ -7,6 +7,7 @@ public class PickUpController : MonoBehaviour
     public GameObject Gun;
     public Transform WeaponParent;
     public bool gunPicked=false;
+    public GameObject crosshair;
     public static PickUpController Instance { get; private set; }
 
 
@@ -53,6 +54,7 @@ public class PickUpController : MonoBehaviour
         Gun.GetComponent<BoxCollider>().enabled = true;
         gunPicked = false;
         AudioManager.Instance.Play("ItemEquip");
+        crosshair.SetActive(false);
     }
     void Equip()
     {
@@ -67,6 +69,7 @@ public class PickUpController : MonoBehaviour
 
         gunPicked = true;
         AudioManager.Instance.Play("ItemEquip");
+        crosshair.SetActive(true);
     }
 
     private void OnTriggerStay(Collider other)
