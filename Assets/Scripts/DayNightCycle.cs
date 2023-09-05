@@ -1,21 +1,33 @@
 using UnityEngine;
+using System.Collections;
 
 public class DayNightCycle : MonoBehaviour
 {
-    public float dayDuration = 300.0f; // Duration of one full day in seconds
-
+    public float dayDuration = 300.0f; // Duration of a full day-night cycle in seconds
+    private Light directionalLight;
     private float currentTime = 0.0f;
 
-    void Update()
+    void Start()
     {
-        // Update the current time based on real-time
-        currentTime += Time.deltaTime;
+        directionalLight = GetComponent<Light>();
+        StartCoroutine(UpdateSunRotation());
+    }
 
-        // Calculate the angle for the sun's rotation based on the current time
-        float sunRotationAngle = (currentTime / dayDuration) * 360.0f;
+    IEnumerator UpdateSunRotation()
+    {
+        while (true)
+        {
+            // Update the current time based on real-time
+            currentTime += Time.deltaTime;
 
-        // Rotate the Directional Light to simulate the sun's movement
-        // You may need to adjust the axis and direction based on your scene's setup
-        transform.rotation = Quaternion.Euler(sunRotationAngle, 0f, 0f);
+            // Calculate the angle for the sun's rotation based on the current time
+            float sunRotationAngle = (currentTime / dayDuration) * 360.0f;
+
+            // Rotate the Directional Light to simulate the sun's movement
+            directionalLight.transform.rotation = Quaternion.Euler(sunRotationAngle, 0f, 0f);
+
+            // Wait for a short interval before the next update
+            yield return new WaitForSeconds(0.1f); // Adjust the interval as needed
+        }
     }
 }

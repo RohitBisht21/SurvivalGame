@@ -1,14 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance; // Singleton instance
+    public static GameManager Instance;
 
     public int zombiesDefeated = 0;
     public bool boss1Defeated = false;
-    public GameObject gate; // Reference to your gate GameObject
+    public GameObject gate;
+    public ParticleSystem portal;
 
     private void Awake()
     {
@@ -22,34 +21,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ZombieDefeated()
+    public void DefeatZombie()
     {
         zombiesDefeated++;
 
-        // Check if both conditions are met to activate the gate
-        if (zombiesDefeated >= 20 && boss1Defeated)
-        {
-            ActivateGate();
-        }
+        // Check if the conditions are met to activate the gate.
+        CheckGateActivation();
     }
 
-    public void Boss1Defeated()
+    public void DefeatBoss1()
     {
         boss1Defeated = true;
 
-        // Check if both conditions are met to activate the gate
-        if (zombiesDefeated >= 20 && boss1Defeated)
-        {
-            ActivateGate();
-        }
+        // Check if the conditions are met to activate the gate.
+        CheckGateActivation();
     }
 
-    private void ActivateGate()
+    private void CheckGateActivation()
     {
-        if (gate != null)
+        // Check if both conditions are met to activate the gate.
+        if (boss1Defeated && zombiesDefeated >= 20)
         {
-            // Activate the gate (you can enable any necessary components here)
-            gate.SetActive(true);
+                gate.SetActive(true);
+                portal.Play();
         }
     }
 }

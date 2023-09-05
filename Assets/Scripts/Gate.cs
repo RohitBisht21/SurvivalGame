@@ -4,8 +4,6 @@ using UnityEngine;
 public class Gate : MonoBehaviour
 {
     public Transform destinationGate;
-    public ParticleSystem teleportParticleSystem;
-    private float particleEffectDuration = 3f;
 
     private void OnTriggerEnter(Collider other)
     {

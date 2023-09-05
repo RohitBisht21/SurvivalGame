@@ -38,13 +38,13 @@ public class EnemyController : MonoBehaviour
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
 
-    
+
 
     private void Start()
     {
         player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
-        playerSurvival =player.GetComponent<Survival>();
+        playerSurvival = player.GetComponent<Survival>();
         timeBetweenAttacks = 0.5f;
     }
     private void Update()
@@ -70,29 +70,16 @@ public class EnemyController : MonoBehaviour
             else if (playerInSightRange && !playerInAttackRange)
             {
                 ChasePlayer();
-               
+
             }
             else if (playerInSightRange && playerInAttackRange)
             {
                 Attacking();
-                
+
             }
         }
-        else if(health<=0)
+        else
         {
-            if (isBoss1)
-            {
-                // Call the GameManager method when boss1 is defeated
-                GameManager.Instance.Boss1Defeated();
-               
-            }
-            else
-            {
-                // Call the GameManager method when a zombie is defeated
-                GameManager.Instance.ZombieDefeated();
-             
-            }
-
             // If health is 0 or less, stop all actions
             agent.SetDestination(transform.position); // Stop the NavMeshAgent
             enemyAnimator.SetBool("Running", false);
@@ -103,7 +90,7 @@ public class EnemyController : MonoBehaviour
     }
     private void Patroling()
     {
-        if (!walkPointSet || agent.remainingDistance <= 3f ) SearchWalkPoint();
+        if (!walkPointSet || agent.remainingDistance <= 3f) SearchWalkPoint();
 
         if (walkPointSet)
         {
@@ -112,13 +99,13 @@ public class EnemyController : MonoBehaviour
             agent.speed = 2f;
             agent.SetDestination(walkPoint);
             enemyAnimator.SetBool("isHit", false);
-      
+
         }
-       if(isBoss1)
-       {
-              AudioManager.Instance.Play("BullBreathing");
-       }
-       else if(isBoss2)
+        if (isBoss1)
+        {
+            AudioManager.Instance.Play("BullBreathing");
+        }
+        else if (isBoss2)
         {
             AudioManager.Instance.Play("CrabBreathing");
         }
@@ -145,15 +132,15 @@ public class EnemyController : MonoBehaviour
         {
             AudioManager.Instance.Play("BullMoan");
         }
-        else if(isZombie)
+        else if (isZombie)
         {
             AudioManager.Instance.Play("ZombieMoan");
         }
-    }    
+    }
     private void Attacking()
     {
         enemyAnimator.SetBool("Attacking", true);
-        
+
         transform.LookAt(player);
 
         if (!alreadyAttacked)
@@ -189,9 +176,9 @@ public class EnemyController : MonoBehaviour
                     AudioManager.Instance.Play("BullDead");
                     AudioManager.Instance.Stop("BullBreathing");
                     AudioManager.Instance.Stop("BullMoan");
-                   
+
                 }
-                else if(isBoss2 && DeadCrab != null)
+                else if (isBoss2 && DeadCrab != null)
                 {
                     DeadCrab.Play();
                     AudioManager.Instance.Play("CrabDead");
@@ -201,7 +188,7 @@ public class EnemyController : MonoBehaviour
                 {
                     AudioManager.Instance.Play("ZombieDead");
                 }
-                
+
                 Invoke(nameof(DestroyEnemy), 2f);
             }
 
@@ -215,9 +202,10 @@ public class EnemyController : MonoBehaviour
     }
     public void DestroyEnemy()
     {
-        
+
         if (isZombie)
         {
+            GameManager.Instance.DefeatZombie();
             // Return the zombie to the pool for reuse
             gameObject.SetActive(false);
         }
@@ -225,6 +213,7 @@ public class EnemyController : MonoBehaviour
         {
             DropKey();
             // Destroy boss-level enemy
+            GameManager.Instance.DefeatBoss1();
             Destroy(gameObject);
         }
     }
@@ -247,11 +236,11 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, sightRange);
-    }
+    //private void OnDrawGizmosSelected()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(transform.position, attackRange);
+    //    Gizmos.color = Color.yellow;
+    //    Gizmos.DrawWireSphere(transform.position, sightRange);
+    //}
 }
