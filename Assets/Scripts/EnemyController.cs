@@ -11,13 +11,19 @@ public class EnemyController : MonoBehaviour
     public float health;
     public Animator enemyAnimator;
     public float newSpeed = 8f;
+
     private Survival playerSurvival;
     public ParticleSystem bloodParticles;
+    public ParticleSystem DeadCrab;
     public Transform headTransform;
     public float headHitRadius = 0.2f;
     private bool hasBeenHit = false;
+
     public bool isZombie = true;
-    public bool isBoss = false;
+    public bool isBoss1 = false;
+    public bool isBoss2 = false;
+
+    public GameObject keyPrefab;
 
     //For Patroling
     public Vector3 walkPoint;
@@ -72,8 +78,21 @@ public class EnemyController : MonoBehaviour
                 
             }
         }
-        else
+        else if(health<=0)
         {
+            if (isBoss1)
+            {
+                // Call the GameManager method when boss1 is defeated
+                GameManager.Instance.Boss1Defeated();
+               
+            }
+            else
+            {
+                // Call the GameManager method when a zombie is defeated
+                GameManager.Instance.ZombieDefeated();
+             
+            }
+
             // If health is 0 or less, stop all actions
             agent.SetDestination(transform.position); // Stop the NavMeshAgent
             enemyAnimator.SetBool("Running", false);
@@ -95,10 +114,14 @@ public class EnemyController : MonoBehaviour
             enemyAnimator.SetBool("isHit", false);
       
         }
-       if(isBoss)
+       if(isBoss1)
        {
               AudioManager.Instance.Play("BullBreathing");
        }
+       else if(isBoss2)
+        {
+            AudioManager.Instance.Play("CrabBreathing");
+        }
     }
     private void SearchWalkPoint()
     {
@@ -118,18 +141,17 @@ public class EnemyController : MonoBehaviour
         enemyAnimator.SetBool("Running", true);
         agent.speed = newSpeed;
         agent.SetDestination(player.position);
-        if(isBoss)
+        if (isBoss1)
         {
             AudioManager.Instance.Play("BullMoan");
         }
-        else
+        else if(isZombie)
         {
             AudioManager.Instance.Play("ZombieMoan");
         }
     }    
     private void Attacking()
     {
-       
         enemyAnimator.SetBool("Attacking", true);
         
         transform.LookAt(player);
@@ -137,12 +159,10 @@ public class EnemyController : MonoBehaviour
         if (!alreadyAttacked)
         {
             playerSurvival.TakeDamage(5);
-            
+
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
-        
-
     }
     private void ResetAttack()
     {
@@ -163,18 +183,26 @@ public class EnemyController : MonoBehaviour
             }
             if (health <= 0)
             {
-                if(isBoss)
+                enemyAnimator.SetTrigger("Die");
+                if (isBoss1)
                 {
                     AudioManager.Instance.Play("BullDead");
                     AudioManager.Instance.Stop("BullBreathing");
                     AudioManager.Instance.Stop("BullMoan");
+                   
+                }
+                else if(isBoss2 && DeadCrab != null)
+                {
+                    DeadCrab.Play();
+                    AudioManager.Instance.Play("CrabDead");
+                    AudioManager.Instance.Stop("CrabBreathing");
                 }
                 else
                 {
                     AudioManager.Instance.Play("ZombieDead");
                 }
-                enemyAnimator.SetTrigger("Die");
-                Invoke(nameof(DestroyEnemy), 3f);
+                
+                Invoke(nameof(DestroyEnemy), 2f);
             }
 
             hasBeenHit = true; // Set the hasBeenHit flag
@@ -195,20 +223,30 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
+            DropKey();
             // Destroy boss-level enemy
             Destroy(gameObject);
         }
     }
 
-     // Reset the properties of the zombie when it's respawned
+    // Reset the properties of the zombie when it's respawned
     public void ResetZombieProperties()
     {
         health = 10f;
         hasBeenHit = false;
         alreadyAttacked = false;
-        
+
     }
-   
+    private void DropKey()
+    {
+        if (keyPrefab != null)
+        {
+            // Instantiate the key prefab at the enemy's position
+            Instantiate(keyPrefab, transform.position, Quaternion.identity);
+            KeyCollection.Instance.keyParticles.Play();
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
