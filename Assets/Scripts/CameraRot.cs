@@ -14,7 +14,7 @@ public class CameraRot : MonoBehaviour
     void Start()
     {
         parent = transform.parent;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame

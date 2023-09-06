@@ -5,6 +5,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     public Sound[] sounds;
+    public float masterVolume = 0f;
     public static AudioManager Instance { get; private set; }
     // Start is called before the first frame update
     void Awake()
@@ -23,7 +24,7 @@ public class AudioManager : MonoBehaviour
             s.source=gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
 
-            s.source.volume = s.volume;
+            s.source.volume = s.volume * masterVolume;
             s.source.pitch = s.pitch;
             s.source.spatialBlend = s.spatialBlend;
             s.source.loop = s.loop;
@@ -45,4 +46,20 @@ public class AudioManager : MonoBehaviour
             s.source.Stop();
         }
     }
+
+    // Function to set the master volume (called from a UI slider)
+    public void SetMasterVolume(float volume)
+    {
+        masterVolume = volume;
+
+        // Adjust the volume of all sounds based on the master volume
+        foreach (Sound s in sounds)
+        {
+            if (s.source != null)
+            {
+                s.source.volume = s.volume * masterVolume;
+            }
+        }
+    }
+
 }
