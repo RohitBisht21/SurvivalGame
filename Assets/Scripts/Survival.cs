@@ -37,6 +37,8 @@ public class Survival : MonoBehaviour
 
     private bool isMovingInWater = false;
 
+    public Canvas deadCanvas;
+
     public static Survival Instance { get; private set; }
 
     private void Awake()
@@ -162,8 +164,8 @@ public class Survival : MonoBehaviour
         else
         {
             ManageControls.Instance.animator.SetBool("Swimming", false);
-            ManageControls.Instance.moveSpeed = 7f;
-            ManageControls.Instance.jumpSpeed = 7f;
+            ManageControls.Instance.moveSpeed = 8f;
+            ManageControls.Instance.jumpSpeed = 10f;
             PickUpController.Instance.Gun.SetActive(true);
             AudioManager.Instance.Stop("WaterWalk");
 
@@ -179,7 +181,10 @@ public class Survival : MonoBehaviour
         UpdateSliders();
         if(Health<=0)
         {
-            Debug.Log("YOU ARE DEAD");
+           deadCanvas.gameObject.SetActive(true);
+           characterController.enabled=false;
+           ManageControls.Instance.animator.enabled=false;
+            AudioManager.Instance.Stop("Running");
         }
         damageEffect.StartDamageEffect();
     }
@@ -194,5 +199,13 @@ public class Survival : MonoBehaviour
         Health = Mathf.Clamp(Health + value, 0, MaxHealth);
         UpdateSliders();
     }
+
+    public void ResetSliderValues()
+{
+    Health = MaxHealth;
+    Hunger = MaxHunger;
+    Thirst = MaxThirst;
+    UpdateSliders();
+}
 
 }

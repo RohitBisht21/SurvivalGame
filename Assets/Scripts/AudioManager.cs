@@ -62,4 +62,12 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void SetAllAudioSourcesActive(bool isActive)
+{
+    foreach (Sound s in sounds)
+    {
+            s.source.enabled = isActive;
+    }
+}
+
 }

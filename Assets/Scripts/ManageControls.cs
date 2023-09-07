@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class ManageControls : MonoBehaviour
 {
     //components
@@ -44,10 +43,10 @@ public class ManageControls : MonoBehaviour
         animator = tempPlayer.transform.GetComponent<Animator>();
 
         // initialize var
-        moveSpeed = 20f;
+        moveSpeed = 8f;
         gravity =-15f;
         mouseSpeed = 100f;
-        jumpSpeed = 7f;
+        jumpSpeed = 10f;
         
     }
 
