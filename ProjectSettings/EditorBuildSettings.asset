@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Free Island Collection/Scenes/Island.unity
+    guid: 21395a1af6f566b459cf2f256020dc81
   m_configObjects: {}

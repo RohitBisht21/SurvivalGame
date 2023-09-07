@@ -36,6 +36,7 @@ public class GunFire : MonoBehaviour
             lastShotTime = Time.time; // Update the last shot time
             muzzleFlash.Play();
             RaycastHit hit;
+            AudioManager.Instance.Play("GunFire");
 
             if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
             {

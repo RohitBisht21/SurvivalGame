@@ -7,9 +7,11 @@ public class PickUpController : MonoBehaviour
     public GameObject Gun;
     public Transform WeaponParent;
     public bool gunPicked=false;
+    public GameObject crosshair;
     public static PickUpController Instance { get; private set; }
 
-    private void Start()
+
+    void Awake()
     {
         if (Instance == null)
         {
@@ -20,6 +22,9 @@ public class PickUpController : MonoBehaviour
             Destroy(gameObject); // Destroy duplicate instances
             return;
         }
+    }
+    private void Start()
+    {
         Gun.GetComponent<Rigidbody>().isKinematic = true;
     }
 
@@ -48,6 +53,8 @@ public class PickUpController : MonoBehaviour
         Gun.GetComponent<MeshCollider>().enabled = true;
         Gun.GetComponent<BoxCollider>().enabled = true;
         gunPicked = false;
+        AudioManager.Instance.Play("ItemEquip");
+        crosshair.SetActive(false);
     }
     void Equip()
     {
@@ -61,6 +68,8 @@ public class PickUpController : MonoBehaviour
         Gun.transform.SetParent(WeaponParent);
 
         gunPicked = true;
+        AudioManager.Instance.Play("ItemEquip");
+        crosshair.SetActive(true);
     }
 
     private void OnTriggerStay(Collider other)

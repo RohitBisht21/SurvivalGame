@@ -10,12 +10,20 @@ public class EnemyController : MonoBehaviour
     public LayerMask whatIsGround, whatIsPlayer;
     public float health;
     public Animator enemyAnimator;
-    private float newSpeed = 5f;
+    public float newSpeed = 8f;
+
     private Survival playerSurvival;
     public ParticleSystem bloodParticles;
+    public ParticleSystem DeadCrab;
     public Transform headTransform;
     public float headHitRadius = 0.2f;
     private bool hasBeenHit = false;
+
+    public bool isZombie = true;
+    public bool isBoss1 = false;
+    public bool isBoss2 = false;
+
+    public GameObject keyPrefab;
 
     //For Patroling
     public Vector3 walkPoint;
@@ -30,12 +38,13 @@ public class EnemyController : MonoBehaviour
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
 
+
+
     private void Start()
     {
         player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
-        //enemyAnimator = GetComponent<Animator>();
-        playerSurvival =player.GetComponent<Survival>();
+        playerSurvival = player.GetComponent<Survival>();
         timeBetweenAttacks = 0.5f;
     }
     private void Update()
@@ -61,10 +70,12 @@ public class EnemyController : MonoBehaviour
             else if (playerInSightRange && !playerInAttackRange)
             {
                 ChasePlayer();
+
             }
             else if (playerInSightRange && playerInAttackRange)
             {
                 Attacking();
+
             }
         }
         else
@@ -74,23 +85,30 @@ public class EnemyController : MonoBehaviour
             enemyAnimator.SetBool("Running", false);
             enemyAnimator.SetBool("Attacking", false);
             enemyAnimator.SetBool("Walking", false);
+            enemyAnimator.SetBool("isHit", true);
         }
     }
     private void Patroling()
     {
-      
-        if(!walkPointSet || agent.remainingDistance <= 3f ) SearchWalkPoint();
+        if (!walkPointSet || agent.remainingDistance <= 3f) SearchWalkPoint();
 
         if (walkPointSet)
         {
             enemyAnimator.SetBool("Running", false);
             enemyAnimator.SetBool("Walking", true);
-            agent.speed = 3;
+            agent.speed = 2f;
             agent.SetDestination(walkPoint);
             enemyAnimator.SetBool("isHit", false);
-      
-        }
 
+        }
+        if (isBoss1)
+        {
+            AudioManager.Instance.Play("BullBreathing");
+        }
+        else if (isBoss2)
+        {
+            AudioManager.Instance.Play("CrabBreathing");
+        }
     }
     private void SearchWalkPoint()
     {
@@ -110,17 +128,25 @@ public class EnemyController : MonoBehaviour
         enemyAnimator.SetBool("Running", true);
         agent.speed = newSpeed;
         agent.SetDestination(player.position);
-    }    
+        if (isBoss1)
+        {
+            AudioManager.Instance.Play("BullMoan");
+        }
+        else if (isZombie)
+        {
+            AudioManager.Instance.Play("ZombieMoan");
+        }
+    }
     private void Attacking()
     {
         enemyAnimator.SetBool("Attacking", true);
-        
+
         transform.LookAt(player);
 
         if (!alreadyAttacked)
         {
-            playerSurvival.TakeDamage(10);
-            
+            playerSurvival.TakeDamage(5);
+
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
@@ -136,8 +162,8 @@ public class EnemyController : MonoBehaviour
             bool hitOnHead = Vector3.Distance(hitPoint, headTransform.position) <= headHitRadius;
 
             health -= damage;
-    
-            if(hitOnHead)
+
+            if (hitOnHead)
             {
                 // Play head hit animation
                 enemyAnimator.SetTrigger("Hit");
@@ -145,7 +171,25 @@ public class EnemyController : MonoBehaviour
             if (health <= 0)
             {
                 enemyAnimator.SetTrigger("Die");
-                Invoke(nameof(DestroyEnemy), 3f);
+                if (isBoss1)
+                {
+                    AudioManager.Instance.Play("BullDead");
+                    AudioManager.Instance.Stop("BullBreathing");
+                    AudioManager.Instance.Stop("BullMoan");
+
+                }
+                else if (isBoss2 && DeadCrab != null)
+                {
+                    DeadCrab.Play();
+                    AudioManager.Instance.Play("CrabDead");
+                    AudioManager.Instance.Stop("CrabBreathing");
+                }
+                else
+                {
+                    AudioManager.Instance.Play("ZombieDead");
+                }
+
+                Invoke(nameof(DestroyEnemy), 2f);
             }
 
             hasBeenHit = true; // Set the hasBeenHit flag
@@ -158,15 +202,45 @@ public class EnemyController : MonoBehaviour
     }
     public void DestroyEnemy()
     {
-        
-        Destroy(gameObject);
+
+        if (isZombie)
+        {
+            GameManager.Instance.DefeatZombie();
+            // Return the zombie to the pool for reuse
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            DropKey();
+            // Destroy boss-level enemy
+            GameManager.Instance.DefeatBoss1();
+            Destroy(gameObject);
+        }
     }
-   
-    private void OnDrawGizmosSelected()
+
+    // Reset the properties of the zombie when it's respawned
+    public void ResetZombieProperties()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, sightRange);
+        health = 10f;
+        hasBeenHit = false;
+        alreadyAttacked = false;
+
     }
+    private void DropKey()
+    {
+        if (keyPrefab != null)
+        {
+            // Instantiate the key prefab at the enemy's position
+            Instantiate(keyPrefab, transform.position, Quaternion.identity);
+            KeyCollection.Instance.keyParticles.Play();
+        }
+    }
+
+    //private void OnDrawGizmosSelected()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(transform.position, attackRange);
+    //    Gizmos.color = Color.yellow;
+    //    Gizmos.DrawWireSphere(transform.position, sightRange);
+    //}
 }
