@@ -7,12 +7,13 @@ public class PauseMenuController : MonoBehaviour
 	public Canvas pauseCanvas;
 	public Canvas menuCanvas;
 	public Canvas optionMenuCanvas;
+	public Canvas deadCanvas;
 	public Camera menuCam;
 	public List<AudioSource> audioSources;
 
 	public void Update()
 	{
-		 if (Input.GetKey(KeyCode.Escape) && !menuCanvas.gameObject.activeSelf && !optionMenuCanvas.gameObject.activeSelf)
+		 if (Input.GetKey(KeyCode.Escape) && !menuCanvas.gameObject.activeSelf && !optionMenuCanvas.gameObject.activeSelf && !deadCanvas.gameObject.activeSelf)
         {
 			Time.timeScale = 0;
             pauseCanvas.gameObject.SetActive(true);

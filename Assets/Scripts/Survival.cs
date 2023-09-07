@@ -186,6 +186,7 @@ public class Survival : MonoBehaviour
            sliderCanvas.gameObject.SetActive(false);
            characterController.enabled=false;
            ManageControls.Instance.animator.enabled=false;
+           AudioManager.Instance.Play("PlayerDeath");
         }
         damageEffect.StartDamageEffect();
     }
