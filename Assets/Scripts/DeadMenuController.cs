@@ -5,9 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class DeadMenuController : MonoBehaviour
 {
-    public Canvas menuCanvas;
-    public Canvas deadCanvas;
-    public Camera menuCam;
 
     public void PlayAgain()
     {

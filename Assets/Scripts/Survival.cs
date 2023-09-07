@@ -38,6 +38,7 @@ public class Survival : MonoBehaviour
     private bool isMovingInWater = false;
 
     public Canvas deadCanvas;
+    public Canvas sliderCanvas;
 
     public static Survival Instance { get; private set; }
 
@@ -182,9 +183,9 @@ public class Survival : MonoBehaviour
         if(Health<=0)
         {
            deadCanvas.gameObject.SetActive(true);
+           sliderCanvas.gameObject.SetActive(false);
            characterController.enabled=false;
            ManageControls.Instance.animator.enabled=false;
-            AudioManager.Instance.Stop("Running");
         }
         damageEffect.StartDamageEffect();
     }
